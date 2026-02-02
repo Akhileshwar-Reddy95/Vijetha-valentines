@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Vijetha ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    font-family: 'Comic Sans MS', 'Segoe UI', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card {
+    background: white;
+    padding: 30px 25px 40px;
+    border-radius: 22px;
+    text-align: center;
+    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+    max-width: 360px;
+    width: 92%;
+}
+
+h1 {
+    color: #ff3d68;
+    font-size: 1.9rem;
+    margin-bottom: 25px;
+}
+
+.buttons {
+    position: relative;
+    height: 130px;
+}
+
+button {
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+#yesBtn {
+    background: #ff3d68;
+    color: white;
+    padding: 16px 42px;
+    font-size: 1.25rem;
+    box-shadow: 0 10px 25px rgba(255,61,104,0.5);
+}
+
+#yesBtn:hover {
+    transform: scale(1.12);
+}
+
+#noBtn {
+    position: absolute;
+    background: #ddd;
+    color: #444;
+    padding: 6px 14px;
+    font-size: 0.7rem;
+    top: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.popup-content {
+    background: white;
+    padding: 25px;
+    border-radius: 22px;
+    text-align: center;
+    animation: pop 0.4s ease;
+    max-width: 330px;
+}
+
+@keyframes pop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.popup img {
+    width: 100%;
+    border-radius: 14px;
+    margin-bottom: 15px;
+}
+
+.popup h2 {
+    color: #ff3d68;
+}
+
+.popup p {
+    font-size: 0.95rem;
+}
+
+.confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    top: -10px;
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+    <h1>Vijetha ❤️<br>Will you be my Valentine?</h1>
+
+    <div class="buttons">
+        <button id="yesBtn">YES 💖</button>
+        <button id="noBtn">no 🙄</button>
+    </div>
+</div>
+
+<div class="popup" id="popup">
+    <div class="popup-content">
+        <img src="https://i.imgflip.com/4/3lmzyx.jpg" alt="Phew meme">
+        <h2>PHEW 😮‍💨</h2>
+        <p>
+            That was CLOSE 😅<br><br>
+            I knew you’d say yes 💕<br>
+            Happy Valentine’s Day, my love ❤️<br><br>
+            Surprise unlocked… 🎁<br>
+            Dinner, laughs, and forever with me 😉
+        </p>
+    </div>
+</div>
+
+<script>
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const popup = document.getElementById('popup');
+const music = document.getElementById('music');
+
+noBtn.addEventListener('mouseenter', runAway);
+noBtn.addEventListener('touchstart', runAway);
+
+function runAway() {
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 100);
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+}
+
+yesBtn.addEventListener('click', () => {
+    popup.style.display = 'flex';
+    music.play();
+    launchConfetti();
+});
+
+function launchConfetti() {
+    for (let i = 0; i < 150; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * window.innerWidth + 'px';
+        confetti.style.background =
+            `hsl(${Math.random() * 360}, 100%, 60%)`;
+        confetti.style.animationDuration =
+            (Math.random() * 2 + 2) + 's';
+        document.body.appendChild(confetti);
+
+        setTimeout(() => confetti.remove(), 4000);
+    }
+}
+</script>
+
+</body>
+</html>
