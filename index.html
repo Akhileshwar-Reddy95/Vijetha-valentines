@@ -6,12 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* { box-sizing: border-box; }
-
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ffe3e3, #ffb6c1);
+    background: linear-gradient(135deg, #ffe6eb, #ffb6c1);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     display: flex;
     align-items: center;
@@ -21,90 +19,77 @@ body {
 
 .card {
     background: white;
-    padding: 30px 26px 34px;
+    padding: 30px;
     border-radius: 22px;
     text-align: center;
     width: 92%;
     max-width: 360px;
     box-shadow: 0 25px 60px rgba(0,0,0,0.25);
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(18px); }
-    to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
-    font-size: 1.85rem;
+    font-size: 1.8rem;
     color: #ff3b6f;
-    margin-bottom: 10px;
 }
 
 .subtitle {
     font-size: 0.95rem;
     color: #555;
-    margin-bottom: 22px;
+    margin: 12px 0 20px;
 }
 
 .buttons {
     position: relative;
-    height: 120px;
+    height: 140px;
 }
 
 button {
     border: none;
     border-radius: 50px;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 #yesBtn {
     background: #ff3b6f;
     color: white;
-    padding: 16px 44px;
-    font-size: 1.2rem;
-    box-shadow: 0 12px 30px rgba(255,59,111,0.45);
-}
-
-#yesBtn:active {
-    transform: scale(0.95);
+    padding: 14px 36px;
+    font-size: 1rem;
 }
 
 #noBtn {
-    position: absolute;
     background: #eee;
-    color: #555;
-    padding: 6px 14px;
-    font-size: 0.7rem;
-    top: 70px;
+    color: #444;
+    padding: 14px 36px;
+    font-size: 1rem;
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
+    top: 70px;
 }
 
-.popup {
+.hint {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 10px;
+}
+
+.overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.65);
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 10;
 }
 
-.popup-content {
+.popup {
     background: white;
-    padding: 26px;
+    padding: 28px;
     border-radius: 22px;
     text-align: center;
     width: 90%;
     max-width: 340px;
-    animation: pop 0.35s ease;
-}
-
-@keyframes pop {
-    from { transform: scale(0.85); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
 }
 
 .popup img {
@@ -115,7 +100,6 @@ button {
 
 .popup h2 {
     color: #ff3b6f;
-    margin-bottom: 6px;
 }
 
 .popup p {
@@ -124,7 +108,7 @@ button {
 }
 
 .popup button {
-    margin-top: 16px;
+    margin-top: 18px;
     background: #ff3b6f;
     color: white;
     padding: 10px 26px;
@@ -150,73 +134,115 @@ button {
 
 <body>
 
-<audio id="music" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-tenderness.mp3" type="audio/mpeg">
+<audio id="clickSound">
+  <source src="https://www.soundjay.com/buttons/sounds/button-16.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card">
     <h1>Vijetha ❤️</h1>
     <div class="subtitle">
-        We already spend every day together…<br>
+        We already live together…<br>
         but will you be my Valentine?
     </div>
 
     <div class="buttons">
         <button id="yesBtn">Yes 💖</button>
-        <button id="noBtn">no</button>
+        <button id="noBtn">No 🤨</button>
     </div>
+
+    <div class="hint" id="hint">Go on… try both 😌</div>
 </div>
 
-<div class="popup" id="popup">
-    <div class="popup-content" id="popupContent">
-        <img src="https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif" alt="relieved">
-        <h2>As expected 😌</h2>
+<div class="overlay" id="overlay">
+    <div class="popup" id="popup">
+        <h2>Okay 😌</h2>
         <p>
-            Obviously you said yes.<br>
-            Still… had to ask properly ❤️
+            That was expected.<br>
+            But I enjoyed watching you play along ❤️
         </p>
-        <button onclick="finalScreen()">One more thing</button>
+        <button onclick="nextStep()">But wait…</button>
     </div>
 </div>
 
 <script>
+let noClicks = 0;
+let yesScale = 1;
+let noScale = 1;
+let step = 0;
+
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
+const hint = document.getElementById("hint");
+const overlay = document.getElementById("overlay");
 const popup = document.getElementById("popup");
-const popupContent = document.getElementById("popupContent");
-const music = document.getElementById("music");
+const clickSound = document.getElementById("clickSound");
+
+noBtn.addEventListener("click", () => {
+    clickSound.play();
+    noClicks++;
+    noScale -= 0.15;
+    yesScale += 0.15;
+
+    noBtn.style.transform = `translateX(-50%) scale(${noScale})`;
+    yesBtn.style.transform = `scale(${yesScale})`;
+
+    if (noClicks === 1) hint.innerText = "Interesting choice 😏";
+    else if (noClicks === 2) hint.innerText = "Still confident? 😄";
+    else {
+        hint.innerText = "Okay okay… now try catching it 😜";
+        moveNo();
+    }
+});
 
 function moveNo() {
-    const x = Math.random() * (window.innerWidth - 120);
-    const y = Math.random() * (window.innerHeight - 120);
+    const x = Math.random() * (window.innerWidth - 140);
+    const y = Math.random() * (window.innerHeight - 200);
     noBtn.style.left = x + "px";
     noBtn.style.top = y + "px";
 }
 
-noBtn.addEventListener("mouseenter", moveNo);
-noBtn.addEventListener("touchstart", moveNo);
-
 yesBtn.addEventListener("click", () => {
-    popup.style.display = "flex";
-    music.play();
+    clickSound.play();
+    overlay.style.display = "flex";
     launchConfetti();
 });
 
-function finalScreen() {
-    popupContent.innerHTML = `
-        <h2>Just a reminder ❤️</h2>
-        <p>
-        We’re already us.<br>
-        We already choose each other every day.<br><br>
-        This is just me saying —<br>
-        I still choose you.<br>
-        And I always will 🙂
-        </p>
-    `;
+function nextStep() {
+    step++;
+
+    if (step === 1) {
+        popup.innerHTML = `
+            <h2>Still here? 😌</h2>
+            <p>
+                This wasn’t about asking…<br>
+                it was about choosing.
+            </p>
+            <button onclick="nextStep()">Okay…</button>
+        `;
+    } else if (step === 2) {
+        popup.innerHTML = `
+            <h2>One more thing ❤️</h2>
+            <p>
+                I know we already do life together.<br>
+                This is just me being intentional 🙂
+            </p>
+            <button onclick="nextStep()">Show me</button>
+        `;
+    } else {
+        popup.innerHTML = `
+            <img src="us.jpg" alt="Us ❤️">
+            <h2>So here’s the plan 😉</h2>
+            <p>
+                <strong>14th Feb · 8:00 PM</strong><br>
+                Dubai Fountain View Restaurant<br><br>
+                Be ready. I’ll handle the rest 😌
+            </p>
+        `;
+    }
 }
 
 function launchConfetti() {
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 120; i++) {
         const c = document.createElement("div");
         c.className = "confetti";
         c.style.left = Math.random() * window.innerWidth + "px";
