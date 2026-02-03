@@ -6,14 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* {
-    box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    background: linear-gradient(135deg, #ffe3e3, #ffb6c1);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     display: flex;
     align-items: center;
@@ -29,18 +27,18 @@ body {
     width: 92%;
     max-width: 360px;
     box-shadow: 0 25px 60px rgba(0,0,0,0.25);
-    animation: fadeIn 0.6s ease;
+    animation: fadeIn 0.5s ease;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
+    from { opacity: 0; transform: translateY(18px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
-    font-size: 1.9rem;
+    font-size: 1.85rem;
     color: #ff3b6f;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .subtitle {
@@ -64,8 +62,8 @@ button {
 #yesBtn {
     background: #ff3b6f;
     color: white;
-    padding: 16px 46px;
-    font-size: 1.25rem;
+    padding: 16px 44px;
+    font-size: 1.2rem;
     box-shadow: 0 12px 30px rgba(255,59,111,0.45);
 }
 
@@ -101,7 +99,7 @@ button {
     text-align: center;
     width: 90%;
     max-width: 340px;
-    animation: pop 0.4s ease;
+    animation: pop 0.35s ease;
 }
 
 @keyframes pop {
@@ -117,7 +115,7 @@ button {
 
 .popup h2 {
     color: #ff3b6f;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .popup p {
@@ -131,12 +129,6 @@ button {
     color: white;
     padding: 10px 26px;
     font-size: 0.9rem;
-}
-
-#countdown {
-    margin-top: 14px;
-    font-size: 0.85rem;
-    color: #666;
 }
 
 .confetti {
@@ -164,25 +156,26 @@ button {
 
 <div class="card">
     <h1>Vijetha ❤️</h1>
-    <div class="subtitle">Will you be my Valentine?</div>
+    <div class="subtitle">
+        We already spend every day together…<br>
+        but will you be my Valentine?
+    </div>
 
     <div class="buttons">
         <button id="yesBtn">Yes 💖</button>
         <button id="noBtn">no</button>
     </div>
-
-    <div id="countdown">Counting down… 💕</div>
 </div>
 
 <div class="popup" id="popup">
     <div class="popup-content" id="popupContent">
-        <img src="https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif" alt="relief gif">
-        <h2>Okay… 😌</h2>
+        <img src="https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif" alt="relieved">
+        <h2>As expected 😌</h2>
         <p>
-            That honestly made my day.<br>
-            I knew you’d say yes ❤️
+            Obviously you said yes.<br>
+            Still… had to ask properly ❤️
         </p>
-        <button onclick="finalScreen()">There’s something else…</button>
+        <button onclick="finalScreen()">One more thing</button>
     </div>
 </div>
 
@@ -211,18 +204,19 @@ yesBtn.addEventListener("click", () => {
 
 function finalScreen() {
     popupContent.innerHTML = `
-        <h2>Just Us ❤️</h2>
+        <h2>Just a reminder ❤️</h2>
         <p>
-        I wanted to ask you early,<br>
-        because every day with you already feels special.<br><br>
-        Valentine’s Day is coming…<br>
-        and I can’t wait to spend it with you 💕
+        We’re already us.<br>
+        We already choose each other every day.<br><br>
+        This is just me saying —<br>
+        I still choose you.<br>
+        And I always will 🙂
         </p>
     `;
 }
 
 function launchConfetti() {
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 100; i++) {
         const c = document.createElement("div");
         c.className = "confetti";
         c.style.left = Math.random() * window.innerWidth + "px";
@@ -232,21 +226,6 @@ function launchConfetti() {
         setTimeout(() => c.remove(), 4000);
     }
 }
-
-// Countdown
-const countdownEl = document.getElementById("countdown");
-const target = new Date("February 14, 2026 00:00:00").getTime();
-
-setInterval(() => {
-    const now = new Date().getTime();
-    const diff = target - now;
-
-    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const m = Math.floor((diff / (1000 * 60)) % 60);
-
-    countdownEl.innerHTML = `${d} days ${h} hrs ${m} mins to Valentine’s Day 💖`;
-}, 1000);
 </script>
 
 </body>
