@@ -6,11 +6,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    font-family: 'Comic Sans MS', 'Segoe UI', cursive;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -19,23 +23,35 @@ body {
 
 .card {
     background: white;
-    padding: 30px 25px 40px;
+    padding: 30px 26px 34px;
     border-radius: 22px;
     text-align: center;
-    box-shadow: 0 20px 45px rgba(0,0,0,0.25);
-    max-width: 360px;
     width: 92%;
+    max-width: 360px;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.25);
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 h1 {
-    color: #ff3d68;
     font-size: 1.9rem;
-    margin-bottom: 25px;
+    color: #ff3b6f;
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 22px;
 }
 
 .buttons {
     position: relative;
-    height: 130px;
+    height: 120px;
 }
 
 button {
@@ -46,24 +62,24 @@ button {
 }
 
 #yesBtn {
-    background: #ff3d68;
+    background: #ff3b6f;
     color: white;
-    padding: 16px 42px;
+    padding: 16px 46px;
     font-size: 1.25rem;
-    box-shadow: 0 10px 25px rgba(255,61,104,0.5);
+    box-shadow: 0 12px 30px rgba(255,59,111,0.45);
 }
 
-#yesBtn:hover {
-    transform: scale(1.12);
+#yesBtn:active {
+    transform: scale(0.95);
 }
 
 #noBtn {
     position: absolute;
-    background: #ddd;
-    color: #444;
+    background: #eee;
+    color: #555;
     padding: 6px 14px;
     font-size: 0.7rem;
-    top: 75px;
+    top: 70px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -71,7 +87,7 @@ button {
 .popup {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.65);
+    background: rgba(0,0,0,0.6);
     display: none;
     align-items: center;
     justify-content: center;
@@ -80,30 +96,47 @@ button {
 
 .popup-content {
     background: white;
-    padding: 25px;
+    padding: 26px;
     border-radius: 22px;
     text-align: center;
+    width: 90%;
+    max-width: 340px;
     animation: pop 0.4s ease;
-    max-width: 330px;
 }
 
 @keyframes pop {
-    from { transform: scale(0.7); opacity: 0; }
+    from { transform: scale(0.85); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
 
 .popup img {
     width: 100%;
     border-radius: 14px;
-    margin-bottom: 15px;
+    margin-bottom: 14px;
 }
 
 .popup h2 {
-    color: #ff3d68;
+    color: #ff3b6f;
+    margin-bottom: 8px;
 }
 
 .popup p {
     font-size: 0.95rem;
+    color: #444;
+}
+
+.popup button {
+    margin-top: 16px;
+    background: #ff3b6f;
+    color: white;
+    padding: 10px 26px;
+    font-size: 0.9rem;
+}
+
+#countdown {
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: #666;
 }
 
 .confetti {
@@ -126,68 +159,94 @@ button {
 <body>
 
 <audio id="music" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+  <source src="https://www.bensound.com/bensound-music/bensound-tenderness.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card">
-    <h1>Vijetha ❤️<br>Will you be my Valentine?</h1>
+    <h1>Vijetha ❤️</h1>
+    <div class="subtitle">Will you be my Valentine?</div>
 
     <div class="buttons">
-        <button id="yesBtn">YES 💖</button>
-        <button id="noBtn">no 🙄</button>
+        <button id="yesBtn">Yes 💖</button>
+        <button id="noBtn">no</button>
     </div>
+
+    <div id="countdown">Counting down… 💕</div>
 </div>
 
 <div class="popup" id="popup">
-    <div class="popup-content">
-        <img src="https://i.imgflip.com/4/3lmzyx.jpg" alt="Phew meme">
-        <h2>PHEW 😮‍💨</h2>
+    <div class="popup-content" id="popupContent">
+        <img src="https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif" alt="relief gif">
+        <h2>Okay… 😌</h2>
         <p>
-            That was CLOSE 😅<br><br>
-            I knew you’d say yes 💕<br>
-            Happy Valentine’s Day, my love ❤️<br><br>
-            Surprise unlocked… 🎁<br>
-            Dinner, laughs, and forever with me 😉
+            That honestly made my day.<br>
+            I knew you’d say yes ❤️
         </p>
+        <button onclick="finalScreen()">There’s something else…</button>
     </div>
 </div>
 
 <script>
-const noBtn = document.getElementById('noBtn');
-const yesBtn = document.getElementById('yesBtn');
-const popup = document.getElementById('popup');
-const music = document.getElementById('music');
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const popup = document.getElementById("popup");
+const popupContent = document.getElementById("popupContent");
+const music = document.getElementById("music");
 
-noBtn.addEventListener('mouseenter', runAway);
-noBtn.addEventListener('touchstart', runAway);
-
-function runAway() {
-    const x = Math.random() * (window.innerWidth - 100);
-    const y = Math.random() * (window.innerHeight - 100);
-    noBtn.style.left = x + 'px';
-    noBtn.style.top = y + 'px';
+function moveNo() {
+    const x = Math.random() * (window.innerWidth - 120);
+    const y = Math.random() * (window.innerHeight - 120);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 }
 
-yesBtn.addEventListener('click', () => {
-    popup.style.display = 'flex';
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("touchstart", moveNo);
+
+yesBtn.addEventListener("click", () => {
+    popup.style.display = "flex";
     music.play();
     launchConfetti();
 });
 
-function launchConfetti() {
-    for (let i = 0; i < 150; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.left = Math.random() * window.innerWidth + 'px';
-        confetti.style.background =
-            `hsl(${Math.random() * 360}, 100%, 60%)`;
-        confetti.style.animationDuration =
-            (Math.random() * 2 + 2) + 's';
-        document.body.appendChild(confetti);
+function finalScreen() {
+    popupContent.innerHTML = `
+        <h2>Just Us ❤️</h2>
+        <p>
+        I wanted to ask you early,<br>
+        because every day with you already feels special.<br><br>
+        Valentine’s Day is coming…<br>
+        and I can’t wait to spend it with you 💕
+        </p>
+    `;
+}
 
-        setTimeout(() => confetti.remove(), 4000);
+function launchConfetti() {
+    for (let i = 0; i < 120; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * window.innerWidth + "px";
+        c.style.background = `hsl(${Math.random()*360},100%,60%)`;
+        c.style.animationDuration = (Math.random()*2 + 2) + "s";
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
     }
 }
+
+// Countdown
+const countdownEl = document.getElementById("countdown");
+const target = new Date("February 14, 2026 00:00:00").getTime();
+
+setInterval(() => {
+    const now = new Date().getTime();
+    const diff = target - now;
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const m = Math.floor((diff / (1000 * 60)) % 60);
+
+    countdownEl.innerHTML = `${d} days ${h} hrs ${m} mins to Valentine’s Day 💖`;
+}, 1000);
 </script>
 
 </body>
